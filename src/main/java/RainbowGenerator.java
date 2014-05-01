@@ -37,7 +37,7 @@ public class RainbowGenerator extends Configured implements Tool {
         job.setReducerClass(RainbowReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
-        job.setNumReduceTasks(1);
+        job.setNumReduceTasks(conf.getInt("rainbow.reducers", defaultReducers));
 
         // Configure Output
         SequenceFileOutputFormat.setOutputPath(job, outputPath);
@@ -85,8 +85,9 @@ public class RainbowGenerator extends Configured implements Tool {
         final Job job = createJob(getConf(), new Path(gop.getRemainingArgs()[0]));
 
         while (!job.isComplete()) {
-            System.out.printf("Map: %f%% Reduce: %f%%\n", job.mapProgress(), job.reduceProgress());
-            Thread.sleep(2000);
+            System.out.printf("Map: %7.3f%% Reduce: %7.3f%%\n",
+                    job.mapProgress() * 100, job.reduceProgress() * 100);
+            Thread.sleep(10000);
         }
         return 0;
     }

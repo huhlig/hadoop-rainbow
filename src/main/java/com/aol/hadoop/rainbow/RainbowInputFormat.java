@@ -12,16 +12,12 @@ import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.JobContext;
 import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Generates Password InputSplits for Rainbow Table Generation.
  */
 public class RainbowInputFormat extends InputFormat<BigIntegerWritable, Text> {
 
-    private static final Logger log = LoggerFactory.getLogger(RainbowInputFormat.class);
-    
     @Override
     public List<InputSplit> getSplits(final JobContext jc) throws IOException, InterruptedException {
         final List<InputSplit> splitList = new ArrayList<InputSplit>();
@@ -44,7 +40,6 @@ public class RainbowInputFormat extends InputFormat<BigIntegerWritable, Text> {
             if (e.compareTo(permutations) > 0) {
                 e = permutations;
             }
-            log.warn(is.toString());
         }
         return splitList;
     }
